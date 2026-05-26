@@ -222,13 +222,14 @@ html {
 
 .pricing-box {
   background: #fff;
-  padding: 40px 20px;
+  padding: 40px 25px; /* Added extra side padding inside the card */
   border-radius: 10px;
   text-align: center;
   transition: 0.3s ease-in-out;
   border: 1px solid #eee;
   position: relative;
   overflow: hidden;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05);
 }
 
 .pricing-box:hover {
@@ -236,40 +237,54 @@ html {
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
 }
 
+.pricing-box h3 {
+  font-weight: 600;
+  margin-bottom: 15px;
+  font-size: 22px; /* Slightly larger heading */
+  color: #2c3e50;
+}
+
 .pricing-box .price {
-  font-size: 36px;
+  font-size: 38px;
   color: #6a11cb;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   display: block;
 }
 
-.btn-buy {
-  background: white;
+/* FIX: Cleaned up the list spacing and hidden ugly default bullets */
+.pricing-box ul {
+  padding-left: 0;
+  list-style: none; /* Removes the double bullet point glitch */
+  color: #444;
+  text-align: left;
+  line-height: 2.2;
+  margin-bottom: 30px;
+  display: inline-block; /* Centers the whole list block inside the card */
+}
+
+.pricing-box ul li {
+  padding-bottom: 8px;
+  font-size: 15px;
+  display: flex;
+  align-items: center; /* Aligns icons perfectly with text */
+}
+
+/* Styles your checkmarks and crosses cleanly */
+.pricing-box ul i, 
+.pricing-box ul li i {
   color: #6a11cb;
-  border: 2px solid #6a11cb;
-  border-radius: 50px;
-  padding: 10px 35px;
-  transition: 0.3s;
-  font-weight: 600;
+  font-size: 16px;
+  margin-right: 10px; /* Gives perfect spacing after icons */
 }
 
-.btn-buy:hover {
-  background: #6a11cb;
-  color: white;
+.pricing-box ul li.na {
+  color: #ccc; /* Grays out features that aren't included */
 }
 
-.pricing-box.featured {
-  transform: scale(1.05);
-  border-color: #6a11cb;
-  z-index: 10;
+.pricing-box ul li.na i {
+  color: #ccc;
 }
-
-.pricing-box.featured .btn-buy {
-  background: #6a11cb;
-  color: white;
-}
-
 .info-box {
   background: #fafbff;
   padding: 30px;
