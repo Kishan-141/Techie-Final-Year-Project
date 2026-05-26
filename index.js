@@ -22,48 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
         sectionObserver.observe(section);
     });
 
-    document.querySelectorAll('.navbar-nav a.nav-link:not([data-bs-toggle]), .hero-section a.nav-link').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            if (this.getAttribute('href').startsWith('#')) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-
-                const targetSection = document.querySelector(targetId);
-                if (targetSection) {
-                    targetSection.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
-        });
-    });
-
-    const filterButtons = document.querySelectorAll('.portfolio-filters .btn');
-    const portfolioItems = document.querySelectorAll('.portfolio-item');
-
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            const filterValue = button.getAttribute('data-filter');
-
-            portfolioItems.forEach(item => {
-                if (filterValue === 'all' || item.classList.contains(filterValue)) {
-                    item.style.display = 'block';
-                    item.style.animation = 'fadeIn 0.5s ease';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        });
-    });
-
     const buyButtons = document.querySelectorAll('.btn-buy');
     const planNameDisplay = document.getElementById('selectedPlanName');
-    const paymentForm = document.getElementById('fakePaymentForm');
 
     buyButtons.forEach(button => {
         button.addEventListener('click', function () {
@@ -80,10 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
     window.selectPaymentMethod = function (method) {
         currentPaymentMethod = method;
         document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
-        document.getElementById(method + 'Option').classList.add('selected');
+        const targetOption = document.getElementById(method + 'Option');
+        if (targetOption) targetOption.classList.add('selected');
 
         document.querySelectorAll('.form-section').forEach(form => form.classList.remove('active'));
-        document.getElementById(method + 'Form').classList.add('active');
+        const targetForm = document.getElementById(method + 'Form');
+        if (targetForm) targetForm.classList.add('active');
     };
 
     window.formatCardNumber = function (input) {
@@ -142,22 +104,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (isValid) {
-            document.getElementById('loadingModal').classList.add('active');
+            // FIX: Use native Bootstrap programmatic commands to manage popup screen state seamlessly
+            const checkoutModalEl = document.getElementById('checkoutModal');
+            const checkoutModal = bootstrap.Modal.getInstance(checkoutModalEl);
+            if (checkoutModal) checkoutModal.hide();
 
-            const modalElement = document.getElementById('checkoutModal');
-            const modalInstance = bootstrap.Modal.getInstance(modalElement);
-            if (modalInstance) modalInstance.hide();
+            const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+            loadingModal.show();
 
             setTimeout(() => {
-                document.getElementById('loadingModal').classList.remove('active');
-                document.getElementById('successModal').classList.add('active');
+                loadingModal.hide();
+                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
                 document.getElementById('orderId').textContent = '#ORD' + Math.floor(Math.random() * 1000000);
+                successModal.show();
             }, 2500);
         }
     };
 
     window.closeSuccessModal = function () {
-        document.getElementById('successModal').classList.remove('active');
+        const successModalEl = document.getElementById('successModal');
+        const successModal = bootstrap.Modal.getInstance(successModalEl);
+        if (successModal) successModal.hide();
         showToastMsg('Thank you for your purchase!', 'success');
 
         document.getElementById('cardNumber').value = '';
@@ -176,22 +143,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     };
+
     const portfolioModal = document.getElementById('portfolioModal');
     if (portfolioModal) {
         portfolioModal.addEventListener('show.bs.modal', function (event) {
             const triggerLink = event.relatedTarget;
-
             const imgSrc = triggerLink.getAttribute('data-img');
             const title = triggerLink.getAttribute('data-title');
             const category = triggerLink.getAttribute('data-category');
 
-            const modalImage = portfolioModal.querySelector('#modalImg');
-            const modalTitle = portfolioModal.querySelector('#modalTitle');
-            const modalCategory = portfolioModal.querySelector('#modalCategory');
-
-            if (modalImage) modalImage.src = imgSrc;
-            if (modalTitle) modalTitle.textContent = title;
-            if (modalCategory) modalCategory.textContent = category;
+            portfolioModal.querySelector('#modalImg').src = imgSrc;
+            portfolioModal.querySelector('#modalTitle').textContent = title;
+            portfolioModal.querySelector('#modalCategory').textContent = category;
         });
     }
 
@@ -199,79 +162,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (teamModal) {
         teamModal.addEventListener('show.bs.modal', function (event) {
             const triggerCard = event.relatedTarget;
-
             const imgSrc = triggerCard.getAttribute('data-img');
             const name = triggerCard.getAttribute('data-name');
             const role = triggerCard.getAttribute('data-role');
             const bio = triggerCard.getAttribute('data-bio');
             const expertise = triggerCard.getAttribute('data-expertise');
 
-            const modalImage = teamModal.querySelector('#teamModalImg');
-            const modalName = teamModal.querySelector('#teamModalName');
-            const modalRole = teamModal.querySelector('#teamModalRole');
-            const modalBio = teamModal.querySelector('#teamModalBio');
-            const modalExpertise = teamModal.querySelector('#teamModalExpertise');
-
-            if (modalImage) modalImage.src = imgSrc;
-            if (modalName) modalName.textContent = name;
-            if (modalRole) modalRole.textContent = role;
-            if (modalBio) modalBio.textContent = bio;
-            if (modalExpertise) modalExpertise.textContent = expertise;
-        });
-    }
-
-    const counters = document.querySelectorAll('.counter-value');
-    const countsSection = document.querySelector('.counts-section');
-    const speed = 200;
-
-    const animateCounters = () => {
-        counters.forEach(counter => {
-            const updateCount = () => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                const inc = target / speed;
-
-                if (count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(updateCount, 15);
-                } else {
-                    counter.innerText = target;
-                }
-            };
-            updateCount();
-        });
-    }
-
-    if (countsSection) {
-        const counterObserver = new IntersectionObserver((entries, observer) => {
-            const [entry] = entries;
-            if (entry.isIntersecting) {
-                animateCounters();
-                observer.unobserve(countsSection);
-            }
-        }, {
-            root: null,
-            threshold: 0.5,
-        });
-        counterObserver.observe(countsSection);
-    }
-
-    const backToTopBtn = document.querySelector('.back-to-top');
-    if (backToTopBtn) {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopBtn.classList.add('active');
-            } else {
-                backToTopBtn.classList.remove('active');
-            }
-        });
-
-        backToTopBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            teamModal.querySelector('#teamModalImg').src = imgSrc;
+            teamModal.querySelector('#teamModalName').textContent = name;
+            teamModal.querySelector('#teamModalRole').textContent = role;
+            teamModal.querySelector('#teamModalBio').textContent = bio;
+            teamModal.querySelector('#teamModalExpertise').textContent = expertise;
         });
     }
 });
