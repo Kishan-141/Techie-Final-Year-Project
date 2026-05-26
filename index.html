@@ -8,7 +8,7 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="project.css">
 </head>
 
 <body data-bs-spy="scroll" data-bs-target="#navbarNav" data-bs-offset="100" tabindex="0">
@@ -297,7 +297,7 @@
           <a href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="project_photos/shopify.jpeg" data-title="Shopify Mobile App" data-category="Mobile Application" style="text-decoration: none; color: inherit;">
             <div class="portfolio-card">
               <div style="overflow: hidden;">
-                <img src="project_photos/shopify .jpeg" alt="Shopify App">
+                <img src="project_photos/shopify.jpeg" alt="Shopify App">
               </div>
               <div class="portfolio-info">
                 <h4>Shopify Mobile App</h4>
@@ -367,7 +367,7 @@
           <a href="#" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="project_photos/food delivery.jpg" data-title="Food Delivery System" data-category="Mobile Application" style="text-decoration: none; color: inherit;">
             <div class="portfolio-card">
               <div style="overflow: hidden;">
-                <img src="project_photos/food delivery .jpg" alt="App 3">
+                <img src="project_photos/food delivery.jpg" alt="App 3">
               </div>
               <div class="portfolio-info">
                 <h4>Food Delivery System</h4>
@@ -626,7 +626,7 @@
           </div>
         </div>
         <div class="col-lg-6">
-          <form class="contact-form">
+          <form class="contact-form" id="fakePaymentForm">
             <div class="row gy-4">
               <div class="col-md-6"><input type="text" class="form-control" placeholder="Your Name" required></div>
               <div class="col-md-6"><input type="email" class="form-control" placeholder="Your Email" required></div>
@@ -645,8 +645,9 @@
     <div class="container">
       <p class="mb-0">&copy; Copyright <strong><span>Techie Agency</span></strong>. All Rights Reserved</p>
     </div>
-  </footer
-  ><a href="#" class="back-to-top"><i class="bi bi-arrow-up"></i></a>
+  </footer>
+  
+  <a href="#" class="back-to-top"><i class="bi bi-arrow-up"></i></a>
 
   <div class="modal fade" id="checkoutModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -720,6 +721,7 @@
               </div>
             </div>
           </div>
+          
           <div id="upiForm" class="form-section">
             <div class="form-group">
               <label>Select UPI App</label>
@@ -780,7 +782,7 @@
   <div id="loadingModal" class="custom-modal">
     <div class="custom-modal-content">
       <div class="spinner"></div>
-      <div class="modal-title">Processing Payment</div>
+      <div class="modal-title font-weight-bold">Processing Payment</div>
       <div class="modal-text text-muted" id="processingText">Please wait while we secure your connection...</div>
     </div>
   </div>
@@ -788,11 +790,15 @@
   <div id="successModal" class="custom-modal">
     <div class="custom-modal-content">
       <div class="success-icon">✅</div>
-      <div class="modal-title">Payment Successful!</div>
-      <div class="modal-text text-muted mb-4"> Your subscription is active.<br> Order ID: <strong id="orderId">#ORD123456</strong> </div>
+      <div class="modal-title font-weight-bold">Payment Successful!</div>
+      <div class="modal-text text-muted mb-4">
+        Your subscription is active.<br>
+        Order ID: <strong id="orderId">#ORD123456</strong>
+      </div>
       <button class="btn-pay w-100" onclick="closeSuccessModal()">Continue to Dashboard</button>
     </div>
   </div>
+
   <div class="modal fade" id="portfolioModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content">
@@ -844,7 +850,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="index.js"></script>
+  <script src="project.js"></script>
 </body>
 
 </html>
